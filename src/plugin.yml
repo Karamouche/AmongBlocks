@@ -1,0 +1,8 @@
+name: AmongBlocks
+version: 1.0
+author: Karamouche
+main: fr.karamouche.amongblocks.Main
+commands:
+  forcestart:
+    description: start the game
+    permission: ab.start
