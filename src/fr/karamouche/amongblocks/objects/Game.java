@@ -2,16 +2,15 @@ package fr.karamouche.amongblocks.objects;
 
 import fr.karamouche.amongblocks.Main;
 import fr.karamouche.amongblocks.enums.Color;
+import fr.karamouche.amongblocks.enums.Roles;
 import fr.karamouche.amongblocks.enums.Statut;
+import fr.karamouche.amongblocks.objects.tasks.TaskEnum;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import skinsrestorer.shared.exception.SkinRequestException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class Game {
     private Statut statut;
@@ -21,6 +20,8 @@ public class Game {
     private int nbPlayers = 0;
     private final int maxPlayer;
     private final Main main;
+    private final int taskGoal;
+    private int taskDoneNum;
 
     public Game(Main main){
         this.statut = Statut.LOBBY;
@@ -29,6 +30,8 @@ public class Game {
         this.tag = ChatColor.LIGHT_PURPLE + "Among"+ ChatColor.DARK_PURPLE+"Blocks §6» ";
         this.maxPlayer = 10;
         this.colorTakenList = new ArrayList<>();
+        this.taskGoal = nbPlayers*5;
+        this.taskDoneNum = 0;
     }
 
     public void addPlayer(Player player){
@@ -43,8 +46,23 @@ public class Game {
     }
 
     public void start(){
+        Random rand = new Random();
+
+        //IMPOSTEUR CHOICE HERE
+        /* TODO
+        Put 2 imposteurs, but for tests its simpler to put 1
+         */
+        AmongPlayer imposteur = (AmongPlayer) this.getPlayers().values().toArray()[rand.nextInt(this.getPlayers().values().size())];
+        imposteur.setRole(Roles.IMPOSTEUR);
+
         for(AmongPlayer aPlayer : this.getPlayers().values()){
             Player player = Bukkit.getPlayer(aPlayer.getPlayerID());
+            //CREWMATE IF NOT IMPOSTEUR
+            if(aPlayer.getRole() == null){
+                aPlayer.setRole(Roles.CREWMATE);
+            }
+
+            //ON MET LA COULEUR
             if(aPlayer.getColor() == null){
                 for(Color color : Color.values()){
                     if(!this.getColorTaken().contains(color)){
@@ -60,7 +78,18 @@ public class Game {
             } catch (SkinRequestException e) {
                 e.printStackTrace();
             }
+
+            //TASK PICKER
+            final TaskEnum[] TasksListEnum = TaskEnum.values();
+            while(aPlayer.getTasks().size() < 5){
+                TaskEnum taskEnum = TasksListEnum[rand.nextInt(TasksListEnum.length)];
+                if(!aPlayer.getTasks().contains(taskEnum)){
+                    aPlayer.getTasks().add(taskEnum);
+                }
+            }
         }
+
+
 
         Bukkit.getServer().broadcastMessage("On a lancé la partie");
         setStatut(Statut.INGAME);
@@ -100,5 +129,17 @@ public class Game {
 
     public ArrayList<Color> getColorTaken(){
         return this.colorTakenList;
+    }
+
+    public int getTaskGoal() {
+        return taskGoal;
+    }
+
+    public int getTaskDoneNum() {
+        return taskDoneNum;
+    }
+
+    public void addTaskDone(){
+        this.taskDoneNum++;
     }
 }

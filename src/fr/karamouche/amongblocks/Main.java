@@ -1,5 +1,7 @@
 package fr.karamouche.amongblocks;
 
+import fr.karamouche.amongblocks.commands.ForcestartCommand;
+import fr.karamouche.amongblocks.commands.SeeTasksCommand;
 import fr.karamouche.amongblocks.gui.GuiBuilder;
 import fr.karamouche.amongblocks.gui.GuiManager;
 import fr.karamouche.amongblocks.gui.ColorMenu;
@@ -36,6 +38,7 @@ public class Main extends JavaPlugin {
         System.out.println("    by Karamouche");
         Bukkit.getPluginManager().registerEvents(new EventListener(this), this);
         getCommand("forcestart").setExecutor(new ForcestartCommand(this));
+        getCommand("seetasks").setExecutor(new SeeTasksCommand(this));
 
         skinsRestorer = JavaPlugin.getPlugin(SkinsRestorer.class);
         skinsRestorerBukkitAPI = skinsRestorer.getSkinsRestorerBukkitAPI();

@@ -6,3 +6,7 @@ commands:
   forcestart:
     description: start the game
     permission: ab.start
+  seetasks:
+    description: see which tasks we have
+    permission: ab.seetasks
+    aliases: st

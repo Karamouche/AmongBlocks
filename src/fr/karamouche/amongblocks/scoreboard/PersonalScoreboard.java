@@ -2,6 +2,7 @@ package fr.karamouche.amongblocks.scoreboard;
 
 import fr.karamouche.amongblocks.Main;
 import fr.karamouche.amongblocks.enums.Statut;
+import fr.karamouche.amongblocks.objects.AmongPlayer;
 import fr.karamouche.amongblocks.objects.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -30,6 +31,7 @@ public class PersonalScoreboard {
 
 	public void setLines(String ip){
 		Game game = main.getGame();
+        AmongPlayer amongPlayer = game.getPlayer(uuid);
         objectiveSign.setDisplayName(ChatColor.LIGHT_PURPLE + "Among"+ChatColor.DARK_PURPLE+"Blocks");
         objectiveSign.setLine(0, ChatColor.GRAY + currentDate);
         objectiveSign.setLine(1, "§1");
@@ -51,7 +53,10 @@ public class PersonalScoreboard {
             objectiveSign.setLine(11, "§4");
             objectiveSign.setLine(12, "§8» " + ip);
         }else if(game.getStatut().equals(Statut.INGAME)){
-
+            objectiveSign.setLine(2, amongPlayer.getRole().toString());
+            for(int i = 3 ; i <= 12 ; i++){
+                objectiveSign.setLine(i, "");
+            }
         }else{
 
         }

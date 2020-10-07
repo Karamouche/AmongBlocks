@@ -1,5 +1,6 @@
-package fr.karamouche.amongblocks;
+package fr.karamouche.amongblocks.commands;
 
+import fr.karamouche.amongblocks.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
