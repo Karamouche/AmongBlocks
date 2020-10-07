@@ -1,13 +1,18 @@
 package fr.karamouche.amongblocks;
 
+import fr.karamouche.amongblocks.gui.GuiBuilder;
+import fr.karamouche.amongblocks.gui.GuiManager;
+import fr.karamouche.amongblocks.gui.ColorMenu;
 import fr.karamouche.amongblocks.objects.Game;
 import fr.karamouche.amongblocks.scoreboard.ScoreboardManager;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import skinsrestorer.bukkit.SkinsRestorer;
 import skinsrestorer.bukkit.SkinsRestorerBukkitAPI;
-import skinsrestorer.shared.exception.SkinRequestException;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -21,11 +26,16 @@ public class Main extends JavaPlugin {
     private SkinsRestorer skinsRestorer;
     private SkinsRestorerBukkitAPI skinsRestorerBukkitAPI;
 
+    //GUI MENUS
+    private GuiManager guiManager;
+    private Map<Class<? extends GuiBuilder>, GuiBuilder> registeredMenus;
+
     @Override
     public void onEnable() {
         System.out.println("Le plugin 'AmongBlocks' se lance");
         System.out.println("    by Karamouche");
         Bukkit.getPluginManager().registerEvents(new EventListener(this), this);
+        getCommand("forcestart").setExecutor(new ForcestartCommand(this));
 
         skinsRestorer = JavaPlugin.getPlugin(SkinsRestorer.class);
         skinsRestorerBukkitAPI = skinsRestorer.getSkinsRestorerBukkitAPI();
@@ -33,6 +43,7 @@ public class Main extends JavaPlugin {
         this.game = new Game(this);
 
         loadScoreboard();
+        loadGui();
     }
 
     public Game getGame(){
@@ -63,9 +74,28 @@ public class Main extends JavaPlugin {
         return scheduledExecutorService;
     }
 
+    //GUI MENUS
+    public GuiManager getGuiManager() {
+        return guiManager;
+    }
+
+    private void loadGui(){
+        guiManager = new GuiManager(this);
+        Bukkit.getPluginManager().registerEvents(guiManager, this);
+        registeredMenus = new HashMap<>();
+        guiManager.addMenu(new ColorMenu(this));
+    }
+
+    public Map<Class<? extends GuiBuilder>, GuiBuilder> getRegisteredMenus() {
+        return registeredMenus;
+    }
+
     @Override
     public void onDisable() {
         System.out.println("Le plugin 'AmongBlocks' s'éteint");
+        for(Player player : Bukkit.getOnlinePlayers()){
+            getSkinAPI().removeSkin(player.getName());
+        }
     }
 
 }

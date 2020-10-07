@@ -2,6 +2,7 @@ package fr.karamouche.amongblocks.objects;
 
 import fr.karamouche.amongblocks.Main;
 import fr.karamouche.amongblocks.enums.Color;
+import fr.karamouche.amongblocks.enums.Tools;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -24,17 +25,21 @@ public class AmongPlayer {
     }
 
     public Color getColor(){
-        return this.getColor();
+        return this.color;
     }
 
     public void setColor(Color color){
+        Game game = main.getGame();
+        if(this.getColor() != null)
+            game.getColorTaken().remove(this.getColor());
         this.color = color;
+        game.getColorTaken().add(color);
     }
 
     public void giveLobbyItems() {
         Player player = Bukkit.getPlayer(this.getPlayerID());
         Inventory inv = player.getInventory();
-
+        inv.setItem(4, Tools.COLORPICKER.toItem());
     }
     /*RED,
     BLUE,

@@ -1,6 +1,8 @@
 package fr.karamouche.amongblocks;
 
 import fr.karamouche.amongblocks.enums.Statut;
+import fr.karamouche.amongblocks.enums.Tools;
+import fr.karamouche.amongblocks.gui.ColorMenu;
 import fr.karamouche.amongblocks.objects.AmongPlayer;
 import fr.karamouche.amongblocks.objects.Game;
 import org.bukkit.ChatColor;
@@ -8,12 +10,14 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import skinsrestorer.shared.exception.SkinRequestException;
 
 public class EventListener implements Listener {
 
@@ -39,22 +43,14 @@ public class EventListener implements Listener {
 
             AmongPlayer aPlayer = game.getPlayer(player.getUniqueId());
             aPlayer.giveLobbyItems();
-
-            try {
-                // setskin for player skin
-                main.getSkinAPI().setSkin(player.getName(), "AmongRed");
-                // Force skinrefresh for player
-                main.getSkinAPI().applySkin(player);
-            } catch (SkinRequestException e) {
-                e.printStackTrace();
-            }
         }
     }
 
     @EventHandler
-    public void onLeave(PlayerQuitEvent event){
+    public void onQuit(PlayerQuitEvent event){
         Game game = main.getGame();
         Player player = event.getPlayer();
+        main.getSkinAPI().removeSkin(player.getName());
         main.getScoreboardManager().onLogout(player);
         if(game.getStatut().equals(Statut.LOBBY)){
             game.removePlayer(player);
@@ -76,8 +72,26 @@ public class EventListener implements Listener {
     }
 
     @EventHandler
+    public void onItemDrop(PlayerDropItemEvent event){
+        event.setCancelled(true);
+    }
+
+    @EventHandler
     public void onHunger(FoodLevelChangeEvent event){
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event){
+        Player player = event.getPlayer();
+        Game game = main.getGame();
+        if(game.getStatut().equals(Statut.LOBBY)){
+            if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                if (event.getItem() != null && event.getItem().isSimilar(Tools.COLORPICKER.toItem())) {
+                    main.getGuiManager().open(player, ColorMenu.class);
+                }
+            }
+        }
     }
 
 }
