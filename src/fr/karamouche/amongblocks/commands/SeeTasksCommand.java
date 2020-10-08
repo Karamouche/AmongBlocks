@@ -33,7 +33,7 @@ public class SeeTasksCommand implements CommandExecutor {
                     }
                     return true;
                 }else
-                    player.sendMessage(game.getTag()+"Vous êtes imposteur, vous n'avez pas de rôle !");
+                    player.sendMessage(game.getTag()+"Vous êtes imposteur, vous n'avez pas de tasks !");
             }else
                 player.sendMessage("§cCubixMC §4» §cErreur: aucune partie n'est en cours.");
         }

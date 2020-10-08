@@ -28,6 +28,7 @@ public class Main extends JavaPlugin {
     private SkinsRestorer skinsRestorer;
     private SkinsRestorerBukkitAPI skinsRestorerBukkitAPI;
 
+
     //GUI MENUS
     private GuiManager guiManager;
     private Map<Class<? extends GuiBuilder>, GuiBuilder> registeredMenus;
