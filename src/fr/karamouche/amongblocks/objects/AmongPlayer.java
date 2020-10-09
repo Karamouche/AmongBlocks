@@ -6,8 +6,11 @@ import fr.karamouche.amongblocks.enums.Roles;
 import fr.karamouche.amongblocks.enums.Tools;
 import fr.karamouche.amongblocks.objects.tasks.TaskEnum;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -71,6 +74,13 @@ public class AmongPlayer {
         Player player = Bukkit.getPlayer(this.getPlayerID());
         Inventory inv = player.getInventory();
         inv.setItem(4, Tools.COLORPICKER.toItem());
+    }
+
+    public void annonceRole() {
+        //ANNONCE SONT ROLE AU JOUEUR
+        Player player = Bukkit.getPlayer(this.getPlayerID());
+        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 300, 1));
+        player.sendTitle(this.getRole().getColor() + this.getRole().toString(), "Il y a "+ ChatColor.RED + "1"+ ChatColor.WHITE+" imposteur dans la partie");
     }
 
 

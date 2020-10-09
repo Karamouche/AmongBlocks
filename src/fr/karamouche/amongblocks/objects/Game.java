@@ -3,6 +3,7 @@ package fr.karamouche.amongblocks.objects;
 import fr.karamouche.amongblocks.Main;
 import fr.karamouche.amongblocks.enums.Color;
 import fr.karamouche.amongblocks.enums.Roles;
+import fr.karamouche.amongblocks.enums.Spawn;
 import fr.karamouche.amongblocks.enums.Statut;
 import fr.karamouche.amongblocks.objects.tasks.TaskEnum;
 import org.bukkit.Bukkit;
@@ -22,6 +23,13 @@ public class Game {
     private final Main main;
     private final int taskGoal;
     private int taskDoneNum;
+
+    /*TODO
+    Create an imposter object with:
+        -kill countdown
+        -isInVent (bool)
+        -sabotage
+     */
 
     public Game(Main main){
         this.statut = Statut.LOBBY;
@@ -48,16 +56,16 @@ public class Game {
     public void start(){
         Random rand = new Random();
 
-        //IMPOSTEUR CHOICE HERE
+        //IMPOSTER CHOICE HERE
         /* TODO
         Put 2 imposteurs, but for tests its simpler to put 1
          */
         AmongPlayer imposteur = (AmongPlayer) this.getPlayers().values().toArray()[rand.nextInt(this.getPlayers().values().size())];
-        imposteur.setRole(Roles.IMPOSTEUR);
+        imposteur.setRole(Roles.IMPOSTER);
 
         for(AmongPlayer aPlayer : this.getPlayers().values()){
             Player player = Bukkit.getPlayer(aPlayer.getPlayerID());
-            //CREWMATE IF NOT IMPOSTEUR
+            //CREWMATE IF NOT IMPOSTER
             if(aPlayer.getRole() == null){
                 aPlayer.setRole(Roles.CREWMATE);
             }
@@ -87,11 +95,14 @@ public class Game {
                     aPlayer.getTasks().add(taskEnum);
                 }
             }
+            player.teleport(Spawn.SPAWN.getLoc());
+            player.getInventory().clear();
+            aPlayer.annonceRole();
         }
 
 
 
-        Bukkit.getServer().broadcastMessage("On a lancé la partie");
+        System.out.println("On a lancé la partie");
         setStatut(Statut.INGAME);
     }
 
