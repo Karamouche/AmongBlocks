@@ -53,8 +53,9 @@ public class PersonalScoreboard {
             objectiveSign.setLine(11, "§4");
             objectiveSign.setLine(12, "§8» " + ip);
         }else if(game.getStatut().equals(Statut.INGAME)){
-            objectiveSign.setLine(2, amongPlayer.getRole().toString());
-            for(int i = 3 ; i <= 12 ; i++){
+            objectiveSign.setLine(2, ChatColor.LIGHT_PURPLE+"Vous êtes :");
+            objectiveSign.setLine(3, amongPlayer.getRole().getColor()+amongPlayer.getRole().toString().toLowerCase());
+            for(int i = 4 ; i <= 12 ; i++){
                 objectiveSign.setLine(i, "");
             }
         }else{

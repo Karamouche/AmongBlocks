@@ -28,7 +28,7 @@ public class SeeTasksCommand implements CommandExecutor {
                 if(aPlayer.getRole().equals(Roles.CREWMATE)){
                     player.sendMessage(game.getTag()+"Voici vos tasks : ");
                     player.sendMessage("");
-                    for(TaskEnum taskEnum : TaskEnum.values()){
+                    for(TaskEnum taskEnum : aPlayer.getTasks()){
                         player.sendMessage(taskEnum.toString().toLowerCase());
                     }
                     return true;

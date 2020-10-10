@@ -4,6 +4,7 @@ import fr.karamouche.amongblocks.Main;
 import fr.karamouche.amongblocks.enums.Color;
 import fr.karamouche.amongblocks.enums.Roles;
 import fr.karamouche.amongblocks.enums.Tools;
+import fr.karamouche.amongblocks.objects.tasks.Digit;
 import fr.karamouche.amongblocks.objects.tasks.TaskEnum;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,6 +22,8 @@ public class AmongPlayer {
     private Color color;
     private final ArrayList<TaskEnum> tasksList;
     private final ArrayList<TaskEnum> doneTasks;
+    private Object actualTask;
+
     private Roles role;
 
     public AmongPlayer(Main main, Player player){
@@ -30,6 +33,7 @@ public class AmongPlayer {
         this.tasksList = new ArrayList<>();
         this.doneTasks = new ArrayList<>();
         this.role = null;
+        this.actualTask = null;
     }
 
     public UUID getPlayerID(){
@@ -46,6 +50,14 @@ public class AmongPlayer {
 
     public void setRole(Roles role) {
         this.role = role;
+    }
+
+    public void setActualTask(Object task){
+        this.actualTask = task;
+    }
+
+    public Object getActualTask(){
+        return this.actualTask;
     }
 
     public void setColor(Color color){
@@ -79,8 +91,33 @@ public class AmongPlayer {
     public void annonceRole() {
         //ANNONCE SONT ROLE AU JOUEUR
         Player player = Bukkit.getPlayer(this.getPlayerID());
-        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 300, 1));
+        PotionEffect potionEffect= new PotionEffect(PotionEffectType.BLINDNESS, 300, 1, true, false);
+        player.addPotionEffect(potionEffect);
         player.sendTitle(this.getRole().getColor() + this.getRole().toString(), "Il y a "+ ChatColor.RED + "1"+ ChatColor.WHITE+" imposteur dans la partie");
+    }
+
+    public void giveItems(){
+        Player player = Bukkit.getPlayer(this.getPlayerID());
+        if(this.getRole().equals(Roles.CREWMATE)){
+            player.getInventory().setItem(8, Tools.TRACKER.toItem());
+        }else if(this.getRole().equals(Roles.IMPOSTER)){
+            player.getInventory().setItem(8, Tools.KILL.toItem());
+        }
+    }
+
+    public void playTask(TaskEnum task){
+        if(task !=null){
+            if(task.equals(TaskEnum.DIGIT)){
+                Digit digit = new Digit(this);
+                digit.open();
+                this.setActualTask(digit);
+            }
+        }
+    }
+
+    public void doneTask(TaskEnum task) {
+        this.getTasks().remove(task);
+        this.getDoneTasks().add(task);
     }
 
 

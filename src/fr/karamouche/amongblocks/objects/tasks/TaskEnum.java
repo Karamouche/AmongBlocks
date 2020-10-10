@@ -17,4 +17,8 @@ public enum TaskEnum {
     TaskEnum(Location loc) {
         this.loc = loc;
     }
+
+    public Location toLocation(){
+        return this.loc;
+    }
 }

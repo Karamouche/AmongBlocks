@@ -98,6 +98,7 @@ public class Game {
             player.teleport(Spawn.SPAWN.getLoc());
             player.getInventory().clear();
             aPlayer.annonceRole();
+            aPlayer.giveItems();
         }
 
 

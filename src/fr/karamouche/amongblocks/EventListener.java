@@ -4,15 +4,15 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.EnumWrappers;
+import fr.karamouche.amongblocks.enums.Roles;
 import fr.karamouche.amongblocks.enums.Statut;
 import fr.karamouche.amongblocks.enums.Tools;
 import fr.karamouche.amongblocks.gui.ColorMenu;
 import fr.karamouche.amongblocks.objects.AmongPlayer;
 import fr.karamouche.amongblocks.objects.Game;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import fr.karamouche.amongblocks.objects.tasks.Digit;
+import fr.karamouche.amongblocks.objects.tasks.TaskEnum;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +20,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -98,6 +100,44 @@ public class EventListener implements Listener {
                     main.getGuiManager().open(player, ColorMenu.class);
                 }
             }
+        }else if(game.getStatut().equals(Statut.INGAME)){
+            AmongPlayer aPlayer = game.getPlayer(player.getUniqueId());
+            if(aPlayer.getRole().equals(Roles.CREWMATE) && event.getClickedBlock() != null){
+                Location blockClickedLocation = event.getClickedBlock().getLocation();
+                TaskEnum task = null;
+                for(TaskEnum taskIterator : TaskEnum.values()){
+                    if(taskIterator.toLocation().equals(blockClickedLocation)){
+                        task = taskIterator;
+                        break;
+                    }
+                }
+                if(aPlayer.getTasks().contains(task))
+                    aPlayer.playTask(task);
+            }
+        }
+    }
+
+    @EventHandler
+    public void DigitEvent(InventoryClickEvent event){
+        Player player = (Player) event.getWhoClicked();
+        AmongPlayer aPlayer = main.getGame().getPlayer(player.getUniqueId());
+        if(aPlayer.getActualTask() instanceof Digit){
+            event.setCancelled(true);
+            Digit digit = (Digit) aPlayer.getActualTask();
+            ItemStack item = event.getCurrentItem();
+            if(item != null && item.getType().equals(Material.STAINED_GLASS_PANE)){
+                digit.addNumber(item.getItemMeta().getDisplayName());
+            }
+        }
+    }
+
+    @EventHandler
+    public void CloseDigitInventory(InventoryCloseEvent event){
+        Player player = (Player) event.getPlayer();
+        AmongPlayer aPlayer = main.getGame().getPlayer(player.getUniqueId());
+        if(aPlayer.getActualTask() != null && aPlayer.getActualTask() instanceof Digit){
+            Digit digit = (Digit) aPlayer.getActualTask();
+            digit.failTask();
         }
     }
 

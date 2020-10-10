@@ -90,7 +90,7 @@ public class ColorMenu implements GuiBuilder{
             if(!game.getColorTaken().contains(color)){
                 AmongPlayer aPlayer = game.getPlayer(player.getUniqueId());
                 aPlayer.setColor(color);
-                player.sendMessage(game.getTag() + "Vous prenez la couleur " + dyeColor.toString());
+                player.sendMessage(game.getTag() + "Vous prenez la couleur " + dyeColor.toString().toLowerCase());
                 player.closeInventory();
             }else
                 player.sendMessage(game.getTag() + "Cette couleur est déjà prise");

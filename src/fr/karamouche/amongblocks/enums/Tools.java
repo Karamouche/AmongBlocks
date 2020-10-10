@@ -8,7 +8,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Collections;
 
 public enum Tools {
-    COLORPICKER(Material.WATCH, ChatColor.LIGHT_PURPLE+"Choisi ta couleur", ChatColor.GRAY+"Clique pour choisir la couleur de ton personnage");
+    COLORPICKER(Material.WATCH, ChatColor.LIGHT_PURPLE+"Choisi ta couleur", ChatColor.GRAY+"Clique pour choisir la couleur de ton personnage"),
+    KILL(Material.DIAMOND_AXE, ChatColor.RED+"Lame du tueur", ChatColor.GRAY+"Clique à coté d'un joueur pour le tuer"),
+    TRACKER(Material.COMPASS, ChatColor.YELLOW+"Tracker", ChatColor.GRAY+"Clique pour pointer ta boussole vers une de tes tasks");
 
     private final Material mat;
     private final String title;
@@ -26,6 +28,8 @@ public enum Tools {
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setDisplayName(this.title);
         itemMeta.setLore(Collections.singletonList(this.lore));
+        if(this.mat.equals(Material.DIAMOND_AXE))
+            itemMeta.spigot().setUnbreakable(true);
         item.setItemMeta(itemMeta);
         return item;
     }
