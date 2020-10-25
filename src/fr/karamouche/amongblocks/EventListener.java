@@ -11,6 +11,7 @@ import fr.karamouche.amongblocks.gui.ColorMenu;
 import fr.karamouche.amongblocks.objects.AmongPlayer;
 import fr.karamouche.amongblocks.objects.Game;
 import fr.karamouche.amongblocks.objects.tasks.Digit;
+import fr.karamouche.amongblocks.objects.tasks.Ordernumbers;
 import fr.karamouche.amongblocks.objects.tasks.TaskEnum;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -94,6 +95,7 @@ public class EventListener implements Listener {
     public void onInteract(PlayerInteractEvent event){
         Player player = event.getPlayer();
         Game game = main.getGame();
+        AmongPlayer aPlayer = game.getPlayer(player.getUniqueId());
         if(game.getStatut().equals(Statut.LOBBY)){
             if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
                 if (event.getItem() != null && event.getItem().isSimilar(Tools.COLORPICKER.toItem())) {
@@ -101,18 +103,21 @@ public class EventListener implements Listener {
                 }
             }
         }else if(game.getStatut().equals(Statut.INGAME)){
-            AmongPlayer aPlayer = game.getPlayer(player.getUniqueId());
-            if(aPlayer.getRole().equals(Roles.CREWMATE) && event.getClickedBlock() != null){
-                Location blockClickedLocation = event.getClickedBlock().getLocation();
-                TaskEnum task = null;
-                for(TaskEnum taskIterator : TaskEnum.values()){
-                    if(taskIterator.toLocation().equals(blockClickedLocation)){
-                        task = taskIterator;
-                        break;
+            if(aPlayer.getRole().equals(Roles.CREWMATE)){
+                if(event.getClickedBlock() != null && event.getItem() == null) {
+                    Location blockClickedLocation = event.getClickedBlock().getLocation();
+                    TaskEnum task = null;
+                    for (TaskEnum taskIterator : TaskEnum.values()) {
+                        if (taskIterator.toLocation().equals(blockClickedLocation)) {
+                            task = taskIterator;
+                            break;
+                        }
                     }
+                    if (aPlayer.getTasks().contains(task))
+                        aPlayer.playTask(task);
+                }if(event.getItem() != null && event.getItem().isSimilar(Tools.TRACKER.toItem())){
+                    aPlayer.openTaskTracker();
                 }
-                if(aPlayer.getTasks().contains(task))
-                    aPlayer.playTask(task);
             }
         }
     }
@@ -128,7 +133,8 @@ public class EventListener implements Listener {
             if(item != null && item.getType().equals(Material.STAINED_GLASS_PANE)){
                 digit.addNumber(item.getItemMeta().getDisplayName());
             }
-        }
+        }else
+            event.setCancelled(true);
     }
 
     @EventHandler
@@ -138,6 +144,35 @@ public class EventListener implements Listener {
         if(aPlayer.getActualTask() != null && aPlayer.getActualTask() instanceof Digit){
             Digit digit = (Digit) aPlayer.getActualTask();
             digit.failTask();
+        }
+    }
+
+    @EventHandler
+    public void OrderNumbersEvent(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+        AmongPlayer aPlayer = main.getGame().getPlayer(player.getUniqueId());
+        if (aPlayer.getActualTask() instanceof Ordernumbers) {
+            event.setCancelled(true);
+            Ordernumbers ordernumbers = (Ordernumbers) aPlayer.getActualTask();
+            ItemStack item = event.getCurrentItem();
+            if (item != null) {
+                String stage = ordernumbers.getStage() + 1 + "";
+                if (stage.equals(item.getItemMeta().getDisplayName().replace("§6", ""))) {
+                    ordernumbers.doneNumber();
+                } else
+                    ordernumbers.failTask();
+            } else
+                event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void CloseOrderNumbersInv(InventoryCloseEvent event){
+        Player player = (Player) event.getPlayer();
+        AmongPlayer aPlayer = main.getGame().getPlayer(player.getUniqueId());
+        if(aPlayer.getActualTask() != null && aPlayer.getActualTask() instanceof Ordernumbers){
+            Ordernumbers ordernumbers = (Ordernumbers) aPlayer.getActualTask();
+            ordernumbers.failTask();
         }
     }
 
@@ -159,7 +194,6 @@ public class EventListener implements Listener {
                         if(!player.equals(event.getPlayer())) {
                             try {
                                 ProtocolLibrary.getProtocolManager().sendServerPacket(player, hideItem);
-                                System.out.println("On envoie bien le packet de " + event.getPlayer().getName() + " à " + player.getName());
                             } catch (InvocationTargetException e) {
                                 e.printStackTrace();
                             }
@@ -171,5 +205,4 @@ public class EventListener implements Listener {
 
         }
     }
-
 }

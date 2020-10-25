@@ -5,11 +5,15 @@ import fr.karamouche.amongblocks.enums.Color;
 import fr.karamouche.amongblocks.enums.Roles;
 import fr.karamouche.amongblocks.enums.Tools;
 import fr.karamouche.amongblocks.objects.tasks.Digit;
+import fr.karamouche.amongblocks.objects.tasks.Ordernumbers;
 import fr.karamouche.amongblocks.objects.tasks.TaskEnum;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -108,9 +112,13 @@ public class AmongPlayer {
     public void playTask(TaskEnum task){
         if(task !=null){
             if(task.equals(TaskEnum.DIGIT)){
-                Digit digit = new Digit(this);
+                Digit digit = new Digit(this, main);
                 digit.open();
                 this.setActualTask(digit);
+            }else if(task.equals(TaskEnum.ORDERNUMBERS)){
+                Ordernumbers ordernumbers = new Ordernumbers(this, main);
+                ordernumbers.open();
+                this.setActualTask(ordernumbers);
             }
         }
     }
@@ -118,6 +126,20 @@ public class AmongPlayer {
     public void doneTask(TaskEnum task) {
         this.getTasks().remove(task);
         this.getDoneTasks().add(task);
+    }
+
+    public void openTaskTracker() {
+        Inventory inv = Bukkit.createInventory(null, 9, "Vos tasks");
+        int i = 0;
+        for(TaskEnum taskEnum : this.getTasks()){
+            ItemStack itemStack = new ItemStack(taskEnum.getMat());
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            itemMeta.setDisplayName(ChatColor.GOLD+taskEnum.toString().toLowerCase());
+            itemStack.setItemMeta(itemMeta);
+            inv.setItem(i, itemStack);
+            i++;
+        }
+        Bukkit.getPlayer(this.getPlayerID()).openInventory(inv);
     }
 
 

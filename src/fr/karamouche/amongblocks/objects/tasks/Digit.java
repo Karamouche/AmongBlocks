@@ -1,8 +1,8 @@
 package fr.karamouche.amongblocks.objects.tasks;
 
+import fr.karamouche.amongblocks.Main;
 import fr.karamouche.amongblocks.objects.AmongPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -15,10 +15,12 @@ public class Digit {
     private final AmongPlayer aPlayer;
     private final String finalNumber;
     private String number;
+    private final Main main;
 
-    public Digit(AmongPlayer aPlayer){
+    public Digit(AmongPlayer aPlayer, Main main){
         String finalNumber1;
         Random rand = new Random();
+        this.main = main;
 
         finalNumber1 = Integer.toString(rand.nextInt(10000));
         while(finalNumber1.length() < 4)
@@ -71,8 +73,6 @@ public class Digit {
 
     public void addNumber(String number){
         this.number += number;
-        System.out.println("On ajoute le chiffre "+number+" et on a "+this.number);
-        System.out.println(this.number.equals(this.getFinalNumber()));
         if(this.number.length() == 4){
             if (this.number.equals(this.getFinalNumber())){
                 this.doneTask();
