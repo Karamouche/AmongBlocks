@@ -4,6 +4,7 @@ import fr.karamouche.amongblocks.Main;
 import fr.karamouche.amongblocks.enums.Color;
 import fr.karamouche.amongblocks.enums.Roles;
 import fr.karamouche.amongblocks.enums.Tools;
+import fr.karamouche.amongblocks.objects.tasks.Cubeorganizer;
 import fr.karamouche.amongblocks.objects.tasks.Digit;
 import fr.karamouche.amongblocks.objects.tasks.Ordernumbers;
 import fr.karamouche.amongblocks.objects.tasks.TaskEnum;
@@ -119,6 +120,10 @@ public class AmongPlayer {
                 Ordernumbers ordernumbers = new Ordernumbers(this, main);
                 ordernumbers.open();
                 this.setActualTask(ordernumbers);
+            }else if(task.equals(TaskEnum.CUBEORGANIZER)){
+                Cubeorganizer cubeorganizer = new Cubeorganizer(this, main);
+                cubeorganizer.open();
+                this.setActualTask(cubeorganizer);
             }
         }
     }

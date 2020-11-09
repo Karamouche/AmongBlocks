@@ -9,6 +9,7 @@ import fr.karamouche.amongblocks.objects.Game;
 import fr.karamouche.amongblocks.scoreboard.ScoreboardManager;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -115,6 +116,15 @@ public class Main extends JavaPlugin {
         woolItemMeta.setDisplayName(name);
         woolItem.setItemMeta(woolItemMeta);
         return woolItem;
+    }
+
+    public ItemStack constructSpacer(int color, String name){
+        ItemStack item = new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) color);
+        ItemMeta itemMeta = item.getItemMeta();
+        itemMeta.setDisplayName(name);
+        item.setItemMeta(itemMeta);
+        return item;
+
     }
 
 }

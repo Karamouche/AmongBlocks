@@ -10,6 +10,7 @@ import fr.karamouche.amongblocks.enums.Tools;
 import fr.karamouche.amongblocks.gui.ColorMenu;
 import fr.karamouche.amongblocks.objects.AmongPlayer;
 import fr.karamouche.amongblocks.objects.Game;
+import fr.karamouche.amongblocks.objects.tasks.Cubeorganizer;
 import fr.karamouche.amongblocks.objects.tasks.Digit;
 import fr.karamouche.amongblocks.objects.tasks.Ordernumbers;
 import fr.karamouche.amongblocks.objects.tasks.TaskEnum;
@@ -23,6 +24,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -126,7 +129,6 @@ public class EventListener implements Listener {
     public void TrackerClickEvent(InventoryClickEvent event){
         if(event.getWhoClicked() instanceof Player){
             Player player = (Player) event.getWhoClicked();
-            System.out.println(event.getInventory().getName());
             if(event.getInventory().getName().equals("Vos tasks")){
                 if(event.getCurrentItem() != null){
                     Material mat = event.getCurrentItem().getType();
@@ -136,8 +138,11 @@ public class EventListener implements Listener {
                             clickedTask = value;
                         }
                     }
-                    if(clickedTask != null)
+                    if(clickedTask != null) {
                         player.setCompassTarget(clickedTask.toLocation());
+                        player.closeInventory();
+                        player.sendMessage(main.getGame().getTag()+"Votre tracker pointe vers : "+clickedTask.toString().toLowerCase());
+                    }
                 }
             }
         }
@@ -194,6 +199,53 @@ public class EventListener implements Listener {
         if(aPlayer.getActualTask() != null && aPlayer.getActualTask() instanceof Ordernumbers){
             Ordernumbers ordernumbers = (Ordernumbers) aPlayer.getActualTask();
             ordernumbers.failTask();
+        }
+    }
+
+    @EventHandler
+    public void CubeOrganizerEvent(InventoryClickEvent event){
+        Player player = (Player) event.getWhoClicked();
+        AmongPlayer aPlayer = main.getGame().getPlayer(player.getUniqueId());
+        if(aPlayer.getActualTask() instanceof Cubeorganizer){
+            event.setCancelled(true);
+            Cubeorganizer cubeorganizer = (Cubeorganizer) aPlayer.getActualTask();
+            ItemStack item = event.getCurrentItem();
+            if(item == null){
+                event.setCancelled(true);
+            }else{
+                if(item.getType().equals(Material.STAINED_GLASS_PANE))
+                    if(item.getItemMeta().getDisplayName() != " "){
+                        if(cubeorganizer.getClickedCube() != null){
+                            cubeorganizer.ismoved(event.getSlot());
+                        }
+                    }else
+                        event.setCancelled(true);
+                else if(item.getType().equals(Material.WOOL)){
+                    if(item.getItemMeta().getDisplayName() != " ")
+                        event.setCancelled(true);
+                    else {
+                        if(cubeorganizer.getClickedCube() == null) {
+                            cubeorganizer.setClickedCube(item);
+                            event.setCancelled(true);
+                            event.getInventory().setItem(event.getSlot(), null);
+                        }else{
+                            event.setCancelled(true);
+                            player.sendMessage(main.getGame().getTag()+"Vous avez déjà un cube dans la main !");
+                        }
+                    }
+                }
+            }
+        }else
+            event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void CloseCubeOrganizerInventory(InventoryCloseEvent event){
+        Player player = (Player) event.getPlayer();
+        AmongPlayer aPlayer = main.getGame().getPlayer(player.getUniqueId());
+        if(aPlayer.getActualTask() != null && aPlayer.getActualTask() instanceof Cubeorganizer){
+            Cubeorganizer cubeorganizer = (Cubeorganizer) aPlayer.getActualTask();
+            cubeorganizer.failTask();
         }
     }
 
