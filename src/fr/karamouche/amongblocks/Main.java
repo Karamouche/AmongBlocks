@@ -8,7 +8,11 @@ import fr.karamouche.amongblocks.gui.ColorMenu;
 import fr.karamouche.amongblocks.objects.Game;
 import fr.karamouche.amongblocks.scoreboard.ScoreboardManager;
 import org.bukkit.Bukkit;
+import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Wool;
 import org.bukkit.plugin.java.JavaPlugin;
 import skinsrestorer.bukkit.SkinsRestorer;
 import skinsrestorer.bukkit.SkinsRestorerBukkitAPI;
@@ -100,6 +104,17 @@ public class Main extends JavaPlugin {
         for(Player player : Bukkit.getOnlinePlayers()){
             getSkinAPI().removeSkin(player.getName());
         }
+    }
+
+    public ItemStack constructWool(DyeColor color, int stackQ, String name){
+        Wool wool = new Wool();
+        wool.setColor(color);
+        ItemStack woolItem = wool.toItemStack();
+        woolItem.setAmount(stackQ);
+        ItemMeta woolItemMeta = woolItem.getItemMeta();
+        woolItemMeta.setDisplayName(name);
+        woolItem.setItemMeta(woolItemMeta);
+        return woolItem;
     }
 
 }

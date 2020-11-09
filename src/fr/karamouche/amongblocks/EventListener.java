@@ -123,6 +123,27 @@ public class EventListener implements Listener {
     }
 
     @EventHandler
+    public void TrackerClickEvent(InventoryClickEvent event){
+        if(event.getWhoClicked() instanceof Player){
+            Player player = (Player) event.getWhoClicked();
+            System.out.println(event.getInventory().getName());
+            if(event.getInventory().getName().equals("Vos tasks")){
+                if(event.getCurrentItem() != null){
+                    Material mat = event.getCurrentItem().getType();
+                    TaskEnum clickedTask = null;
+                    for(TaskEnum value : TaskEnum.values()){
+                        if(value.getMat().equals(mat)){
+                            clickedTask = value;
+                        }
+                    }
+                    if(clickedTask != null)
+                        player.setCompassTarget(clickedTask.toLocation());
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void DigitEvent(InventoryClickEvent event){
         Player player = (Player) event.getWhoClicked();
         AmongPlayer aPlayer = main.getGame().getPlayer(player.getUniqueId());

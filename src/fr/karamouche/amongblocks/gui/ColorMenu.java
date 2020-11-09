@@ -4,7 +4,7 @@ import fr.karamouche.amongblocks.Main;
 import fr.karamouche.amongblocks.enums.Color;
 import fr.karamouche.amongblocks.objects.AmongPlayer;
 import fr.karamouche.amongblocks.objects.Game;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -29,53 +29,41 @@ public class ColorMenu implements GuiBuilder{
 
     @Override
     public void contents(Player player, Inventory inv) {
-        Wool red = new Wool();
-        red.setColor(DyeColor.RED);
-        inv.setItem(0, red.toItemStack());
+        ItemStack red = main.constructWool(DyeColor.RED, 1, ChatColor.RED+"Rouge");
+        inv.setItem(0, red);
 
-        Wool blue = new Wool();
-        blue.setColor(DyeColor.BLUE);
-        inv.setItem(1, blue.toItemStack());
+        ItemStack blue = main.constructWool(DyeColor.BLUE, 1, ChatColor.BLUE+"Bleu");
+        inv.setItem(1, blue);
 
-        Wool green = new Wool();
-        blue.setColor(DyeColor.GREEN);
-        inv.setItem(2, green.toItemStack());
+        ItemStack green = main.constructWool(DyeColor.GREEN, 1, ChatColor.DARK_GREEN+"Vert");
+        inv.setItem(2, green);
 
-        Wool pink = new Wool();
-        pink.setColor(DyeColor.PINK);
-        inv.setItem(3, pink.toItemStack());
+        ItemStack pink = main.constructWool(DyeColor.PINK, 1, ChatColor.LIGHT_PURPLE+"Rose");
+        inv.setItem(3, pink);
 
-        Wool orange = new Wool();
-        orange.setColor(DyeColor.ORANGE);
-        inv.setItem(4, orange.toItemStack());
+        ItemStack orange = main.constructWool(DyeColor.ORANGE, 1, ChatColor.GOLD+"Orange");
+        inv.setItem(4, orange);
 
-        Wool yellow = new Wool();
-        yellow.setColor(DyeColor.YELLOW);
-        inv.setItem(5, yellow.toItemStack());
+        ItemStack yellow = main.constructWool(DyeColor.YELLOW, 1, ChatColor.YELLOW+"Jaune");
+        inv.setItem(5, yellow);
 
-        Wool black = new Wool();
-        black.setColor(DyeColor.BLACK);
-        inv.setItem(6, black.toItemStack());
+        ItemStack black = main.constructWool(DyeColor.BLACK, 1, ChatColor.BLACK+"Noir");
+        inv.setItem(6, black);
 
-        Wool gray = new Wool();
-        gray.setColor(DyeColor.GRAY);
-        inv.setItem(7, gray.toItemStack());
+        ItemStack gray = main.constructWool(DyeColor.GRAY, 1, ChatColor.GRAY+"Gris");
+        inv.setItem(7, gray);
 
-        Wool purple = new Wool();
-        purple.setColor(DyeColor.PURPLE);
-        inv.setItem(8, purple.toItemStack());
+        ItemStack purple = main.constructWool(DyeColor.PURPLE, 1, ChatColor.DARK_PURPLE+"Violet");
+        inv.setItem(8, purple);
 
-        Wool brown = new Wool();
-        brown.setColor(DyeColor.BROWN);
-        inv.setItem(9, brown.toItemStack());
+        ItemStack brown = main.constructWool(DyeColor.BROWN, 1, ChatColor.GOLD+"Marron");
+        inv.setItem(9, brown);
 
-        Wool aqua = new Wool();
-        aqua.setColor(DyeColor.LIGHT_BLUE);
-        inv.setItem(10, aqua.toItemStack());
+        ItemStack aqua = main.constructWool(DyeColor.LIGHT_BLUE, 1, ChatColor.AQUA+"Aqua");
+        inv.setItem(10, aqua);
 
-        Wool lime = new Wool();
-        lime.setColor(DyeColor.LIME);
-        inv.setItem(11, lime.toItemStack());
+        ItemStack lime = main.constructWool(DyeColor.LIME, 1, ChatColor.GREEN+"Vert");
+        inv.setItem(11, lime);
 
 
     }
@@ -90,7 +78,7 @@ public class ColorMenu implements GuiBuilder{
             if(!game.getColorTaken().contains(color)){
                 AmongPlayer aPlayer = game.getPlayer(player.getUniqueId());
                 aPlayer.setColor(color);
-                player.sendMessage(game.getTag() + "Vous prenez la couleur " + dyeColor.toString().toLowerCase());
+                player.sendMessage(game.getTag() + "Vous prenez la couleur " + current.getItemMeta().getDisplayName().toLowerCase());
                 player.closeInventory();
             }else
                 player.sendMessage(game.getTag() + "Cette couleur est déjà prise");
