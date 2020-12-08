@@ -56,7 +56,7 @@ public class ColorMenu implements GuiBuilder{
         ItemStack purple = main.constructWool(DyeColor.PURPLE, 1, ChatColor.DARK_PURPLE+"Violet");
         inv.setItem(8, purple);
 
-        ItemStack brown = main.constructWool(DyeColor.BROWN, 1, ChatColor.GOLD+"Marron");
+        ItemStack brown = main.constructWool(DyeColor.BROWN, 1, ChatColor.DARK_RED+"Marron");
         inv.setItem(9, brown);
 
         ItemStack aqua = main.constructWool(DyeColor.LIGHT_BLUE, 1, ChatColor.AQUA+"Aqua");

@@ -85,14 +85,14 @@ public class Digit {
         AmongPlayer aPlayer = this.getAmongPlayer();
         aPlayer.setActualTask(null);
         Bukkit.getPlayer(aPlayer.getPlayerID()).closeInventory();
-        Bukkit.getPlayer(aPlayer.getPlayerID()).sendMessage(main.getGame().getTag()+"Vous avez échoué la tache DIGIT !");
+        Bukkit.getPlayer(aPlayer.getPlayerID()).sendMessage(main.getGame().getTag()+"Vous avez échoué la tache digit !");
     }
 
     private void doneTask() {
         AmongPlayer aPlayer = this.getAmongPlayer();
         aPlayer.setActualTask(null);
         Bukkit.getPlayer(aPlayer.getPlayerID()).closeInventory();
-        Bukkit.getPlayer(aPlayer.getPlayerID()).sendMessage(main.getGame().getTag()+"Vous avez réussi la tache DIGIT !");
+        Bukkit.getPlayer(aPlayer.getPlayerID()).sendMessage(main.getGame().getTag()+"Vous avez réussi la tache digit !");
         aPlayer.doneTask(TaskEnum.DIGIT);
     }
 

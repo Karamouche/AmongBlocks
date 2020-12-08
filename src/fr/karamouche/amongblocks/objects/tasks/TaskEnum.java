@@ -14,17 +14,18 @@ public enum TaskEnum {
     //TRIER LES CUBES DANS LA BONNE CASE
     CUBEORGANIZER(new Location(Bukkit.getWorld("TheSkeld"), 744, 13, -523), Material.MINECART),
 
-    //RELIER LES DEUX COTES DE BONNE COULEUR
-    WIRE(new Location(Bukkit.getWorld("TheSkeld"), 751, 13, -525), Material.SUGAR_CANE),
-
-    //CLICKER ET ATTENDRE
-    UPLOAD(new Location(Bukkit.getWorld("TheSkeld"), 758, 13, -521), Material.REDSTONE_COMPARATOR),
-
     //CLICKER SUR LES PAIRES D'OBJETS
     PAIR(new Location(Bukkit.getWorld("TheSkeld"), 761, 13, -515), Material.POWERED_RAIL),
 
     //CLICKER SUR LE BON BOUTON
-    CLICKONGOOD(new Location(Bukkit.getWorld("TheSkeld"), 755, 13, -514), Material.REDSTONE);
+    CLICKONGOOD(new Location(Bukkit.getWorld("TheSkeld"), 755, 13, -514), Material.REDSTONE),
+
+    //RELIER LES DEUX COTES DE BONNE COULEUR
+    WIRE(new Location(Bukkit.getWorld("TheSkeld"), 751, 13, -525), Material.SUGAR_CANE),
+
+    //CLICKER ET ATTENDRE
+    UPLOAD(new Location(Bukkit.getWorld("TheSkeld"), 758, 13, -521), Material.REDSTONE_COMPARATOR);
+
 
     private final Location loc;
     private final Material mat;

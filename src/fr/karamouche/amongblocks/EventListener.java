@@ -214,14 +214,14 @@ public class EventListener implements Listener {
                 event.setCancelled(true);
             }else{
                 if(item.getType().equals(Material.STAINED_GLASS_PANE))
-                    if(item.getItemMeta().getDisplayName() != " "){
+                    if(!item.getItemMeta().getDisplayName().equals(" ")){
                         if(cubeorganizer.getClickedCube() != null){
                             cubeorganizer.ismoved(event.getSlot());
                         }
                     }else
                         event.setCancelled(true);
                 else if(item.getType().equals(Material.WOOL)){
-                    if(item.getItemMeta().getDisplayName() != " ")
+                    if(!item.getItemMeta().getDisplayName().equals(" "))
                         event.setCancelled(true);
                     else {
                         if(cubeorganizer.getClickedCube() == null) {
@@ -276,6 +276,16 @@ public class EventListener implements Listener {
                 }
             }.runTaskLater(main, 1);
 
+        }
+    }
+
+    @EventHandler
+    public void onChat(AsyncPlayerChatEvent event){
+        Game game = main.getGame();
+        if(game.getStatut().equals(Statut.INGAME)){
+            AmongPlayer aPlayer = game.getPlayer(event.getPlayer().getUniqueId());
+            if(aPlayer != null)
+                event.setFormat(aPlayer.getColor().getColor()+"["+event.getPlayer().getName()+"] :§r "+event.getMessage());
         }
     }
 }

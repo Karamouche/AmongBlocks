@@ -1,27 +1,30 @@
 package fr.karamouche.amongblocks.enums;
 
+import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 
 public enum Color {
-    RED("AmongRed", DyeColor.RED),
-    BLUE("AmongBlue", DyeColor.BLUE),
-    GREEN("AmongGreen", DyeColor.GREEN),
-    PINK("AmongPink", DyeColor.PINK),
-    ORANGE("AmongOrange", DyeColor.ORANGE),
-    YELLOW("AmongYellow", DyeColor.YELLOW),
-    BLACK("AmongBlack", DyeColor.BLACK),
-    GRAY("AmongGray", DyeColor.GRAY),
-    PURPLE("AmongPurple", DyeColor.PURPLE),
-    BROWN("AmongBrown", DyeColor.BROWN),
-    AQUA("AmongAqua", DyeColor.LIGHT_BLUE),
-    LIME("AmongLime", DyeColor.LIME);
+    RED("AmongRed", DyeColor.RED, ChatColor.RED),
+    BLUE("AmongBlue", DyeColor.BLUE, ChatColor.BLUE),
+    GREEN("AmongGreen", DyeColor.GREEN, ChatColor.DARK_GREEN),
+    PINK("AmongPink", DyeColor.PINK, ChatColor.LIGHT_PURPLE),
+    ORANGE("AmongOrange", DyeColor.ORANGE, ChatColor.GOLD),
+    YELLOW("AmongYellow", DyeColor.YELLOW, ChatColor.YELLOW),
+    BLACK("AmongBlack", DyeColor.BLACK, ChatColor.BLACK),
+    GRAY("AmongGray", DyeColor.GRAY, ChatColor.GRAY),
+    PURPLE("AmongPurple", DyeColor.PURPLE, ChatColor.DARK_PURPLE),
+    BROWN("AmongBrown", DyeColor.BROWN, ChatColor.DARK_RED),
+    AQUA("AmongAqua", DyeColor.LIGHT_BLUE, ChatColor.AQUA),
+    LIME("AmongLime", DyeColor.LIME, ChatColor.GREEN);
 
     String skinName;
     DyeColor dyeColor;
+    ChatColor color;
 
-    Color(String skinName, DyeColor dyeColor){
+    Color(String skinName, DyeColor dyeColor, ChatColor color){
         this.skinName = skinName;
         this.dyeColor = dyeColor;
+        this.color = color;
     }
 
     public static Color get(DyeColor dyeColor) {
@@ -39,5 +42,9 @@ public enum Color {
 
     public DyeColor getDyeColor(){
         return this.dyeColor;
+    }
+
+    public ChatColor getColor(){
+        return this.color;
     }
 }

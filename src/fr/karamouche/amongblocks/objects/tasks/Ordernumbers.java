@@ -74,14 +74,14 @@ public class Ordernumbers {
         AmongPlayer aPlayer = this.getAmongPlayer();
         aPlayer.setActualTask(null);
         Bukkit.getPlayer(aPlayer.getPlayerID()).closeInventory();
-        Bukkit.getPlayer(aPlayer.getPlayerID()).sendMessage(main.getGame().getTag()+"Vous avez échoué la tâche ORDERNUMBERS !");
+        Bukkit.getPlayer(aPlayer.getPlayerID()).sendMessage(main.getGame().getTag()+"Vous avez échoué la tâche ordernumbers !");
     }
 
     private void doneTask() {
         AmongPlayer aPlayer = this.getAmongPlayer();
         aPlayer.setActualTask(null);
         Bukkit.getPlayer(aPlayer.getPlayerID()).closeInventory();
-        Bukkit.getPlayer(aPlayer.getPlayerID()).sendMessage(main.getGame().getTag()+"Vous avez réussi la tâche ORDERNUMBERS !");
+        Bukkit.getPlayer(aPlayer.getPlayerID()).sendMessage(main.getGame().getTag()+"Vous avez réussi la tâche ordernumbers !");
         aPlayer.doneTask(TaskEnum.ORDERNUMBERS);
     }
 

@@ -96,6 +96,7 @@ public class Game {
                 }
             }
             player.teleport(Spawn.SPAWN.getLoc());
+            player.getInventory().setHeldItemSlot(0);
             player.getInventory().clear();
             aPlayer.annonceRole();
             aPlayer.giveItems();
@@ -136,7 +137,10 @@ public class Game {
     }
 
     public AmongPlayer getPlayer(UUID id) {
-        return this.players.get(id);
+        if(this.players.containsKey(id))
+            return this.players.get(id);
+        else
+            return null;
     }
 
     public ArrayList<Color> getColorTaken(){

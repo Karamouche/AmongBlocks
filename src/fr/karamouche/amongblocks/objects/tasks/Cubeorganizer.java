@@ -116,14 +116,14 @@ public class Cubeorganizer {
         AmongPlayer aPlayer = this.getAmongPlayer();
         aPlayer.setActualTask(null);
         Bukkit.getPlayer(aPlayer.getPlayerID()).closeInventory();
-        Bukkit.getPlayer(aPlayer.getPlayerID()).sendMessage(main.getGame().getTag()+"Vous avez échoué la tache CUBEORGANIZER !");
+        Bukkit.getPlayer(aPlayer.getPlayerID()).sendMessage(main.getGame().getTag()+"Vous avez échoué la tache cubeorganizer");
     }
 
     private void doneTask() {
         AmongPlayer aPlayer = this.getAmongPlayer();
         aPlayer.setActualTask(null);
         Bukkit.getPlayer(aPlayer.getPlayerID()).closeInventory();
-        Bukkit.getPlayer(aPlayer.getPlayerID()).sendMessage(main.getGame().getTag()+"Vous avez réussi la tache CUBEORGANIZER !");
+        Bukkit.getPlayer(aPlayer.getPlayerID()).sendMessage(main.getGame().getTag()+"Vous avez réussi la tache cubeorganizer !");
         aPlayer.doneTask(TaskEnum.CUBEORGANIZER);
     }
 
